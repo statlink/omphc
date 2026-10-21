@@ -5,7 +5,6 @@ importFrom("pchc", rbn, rbn2, rbn3)
 importFrom("Rfast", standardise, colMaxs, eachcol.apply)
 importFrom("stats", pf, cor)
 import("Rcpp")
-import("RcppArmadillo")
 export(bnmat, bnplot, omp.network, omphc, rbn, rbn2, rbn3, update.skel)
 
 
