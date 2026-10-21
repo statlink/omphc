@@ -22,7 +22,7 @@ omp.network <- function(x, R = NULL, method = "pvalue", tol = 0.05) {
   if ( method == "pvalue" ) {
     logalpha <- log(tol)
     ## In-place computation of G and Rho
-    forward_loop_cpp(x, R, xx, ini.sel, G, Rho, logalpha, use_gram)
+    forward_loop_pvalue_cpp(x, R, xx, ini.sel, G, Rho, logalpha, use_gram)
 
     # for ( j in 1:d ) {
     #   rho <- 0
@@ -68,45 +68,52 @@ omp.network <- function(x, R = NULL, method = "pvalue", tol = 0.05) {
 
     ######## Network construction based on BIC
   } else if ( method == "BIC" ) {
+    ## In-place computation of G and Rho
     con <- n * log(2 * pi) + n
     logn <- log(n)
-    for ( j in 1:d ) {
-      rho <- n * log( (n - 1)/n ) + 2 * logn
-      ind <- 1:d
-      y <- x[, j]
-      ind[j] <- 0
-      sel <- ini.sel[j]
-      sela <- sel
-      res <- y - x[, sela] * R[sela, j]
-      rho[2] <- n * log(sum(res^2)/n) + 3 * logn
-      ind[sela] <- 0
-      r <- R[j, ]
-      i <- 2
-      be <- R[sela, j]
-	  
-      while ( rho[i - 1] - rho[i] > tol  &  i < n ) {
-        i <- i + 1
-        r[sela] <- 0
-        #r[ind] <- Rfast::eachcol.apply(x, res, indices = ind[ind > 0])
-		idx <- ind[ind > 0] 
-        r[idx] <- xx[idx, j] - xx[idx, sela, drop = FALSE] %*% be ## faster
-        sel <- which.max( abs(r) )
-        sela <- c(sela, sel)
-        be <- try( solve( xx[sela, sela], xx[sela, j] ), silent = TRUE )
-        if ( identical(class(be), "try-error") ) {
-          rho[i] <- rho[i - 1]
-        } else {
-          res <- y - x[, sela] %*% be
-          rho[i] <- n * log(sum(res^2)/n) + (i + 1) * logn
-        }
-        ind[sela] <- 0
-      } ##  end while (rho[i - 1] - rho[i] > tol & i < n) {
-      len <- length(sela)
-      Rho[[ j ]] <- rho[1:len] + con
-      names(Rho[[ j ]]) <- c(0, sela[-len] )
-      G[j, sela[-len]] <- 1
-    }  ## end for ( j in 1:d ) {
 
+    forward_loop_bic_cpp( x = x, R = R, xx = xx, ini_sel = ini.sel, G = G,
+                          Rho = Rho, tol = tol, con = con, logn = logn,
+                          use_gram = use_gram)
+    # con <- n * log(2 * pi) + n
+    # logn <- log(n)
+    # for ( j in 1:d ) {
+    #   rho <- n * log( (n - 1)/n ) + 2 * logn
+    #   ind <- 1:d
+    #   y <- x[, j]
+    #   ind[j] <- 0
+    #   sel <- ini.sel[j]
+    #   sela <- sel
+    #   res <- y - x[, sela] * R[sela, j]
+    #   rho[2] <- n * log(sum(res^2)/n) + 3 * logn
+    #   ind[sela] <- 0
+    #   r <- R[j, ]
+    #   i <- 2
+    #   be <- R[sela, j]
+    #
+    #   while ( rho[i - 1] - rho[i] > tol  &  i < n ) {
+    #     i <- i + 1
+    #     r[sela] <- 0
+    #     #r[ind] <- Rfast::eachcol.apply(x, res, indices = ind[ind > 0])
+    #     idx <- ind[ind > 0]
+    #     r[idx] <- xx[idx, j] - xx[idx, sela, drop = FALSE] %*% be ## faster
+    #     sel <- which.max( abs(r) )
+    #     sela <- c(sela, sel)
+    #     be <- try( solve( xx[sela, sela], xx[sela, j] ), silent = TRUE )
+    #     if ( identical(class(be), "try-error") ) {
+    #       rho[i] <- rho[i - 1]
+    #     } else {
+    #       res <- y - x[, sela] %*% be
+    #       rho[i] <- n * log(sum(res^2)/n) + (i + 1) * logn
+    #     }
+    #     ind[sela] <- 0
+    #   } ##  end while (rho[i - 1] - rho[i] > tol & i < n) {
+    #   len <- length(sela)
+    #   Rho[[ j ]] <- rho[1:len] + con
+    #   names(Rho[[ j ]]) <- c(0, sela[-len] )
+    #   G[j, sela[-len]] <- 1
+    # }  ## end for ( j in 1:d ) {
+    #
     ######## Network construction based on adjusted R-square
   } else if ( method == "ar2" ) {
     down <- (n - 1)
@@ -128,8 +135,8 @@ omp.network <- function(x, R = NULL, method = "pvalue", tol = 0.05) {
       while ( rho[i] - rho[i - 1] > tol  &  i < n ) {
         i <- i + 1
         #r[ind] <- Rfast::eachcol.apply(x, res, indices = ind[ind > 0])
-		idx <- ind[ind > 0] 
-        r[idx] <- xx[idx, j] - xx[idx, sela, drop = FALSE] %*% be 
+		idx <- ind[ind > 0]
+        r[idx] <- xx[idx, j] - xx[idx, sela, drop = FALSE] %*% be
         r[sela] <- 0
         sel <- which.max(abs(r))
         sela <- c(sela, sel)
