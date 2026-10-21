@@ -11,9 +11,9 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// forward_loop_cpp
-void forward_loop_cpp(const arma::mat& x, const arma::mat& R, const arma::mat& xx, const arma::vec& ini_sel, Rcpp::NumericMatrix G, Rcpp::List Rho, const double logalpha, const bool use_gram);
-RcppExport SEXP _omphc_forward_loop_cpp(SEXP xSEXP, SEXP RSEXP, SEXP xxSEXP, SEXP ini_selSEXP, SEXP GSEXP, SEXP RhoSEXP, SEXP logalphaSEXP, SEXP use_gramSEXP) {
+// forward_loop_pvalue_cpp
+void forward_loop_pvalue_cpp(const arma::mat& x, const arma::mat& R, const arma::mat& xx, const arma::vec& ini_sel, Rcpp::NumericMatrix G, Rcpp::List Rho, const double logalpha, const bool use_gram);
+RcppExport SEXP _omphc_forward_loop_pvalue_cpp(SEXP xSEXP, SEXP RSEXP, SEXP xxSEXP, SEXP ini_selSEXP, SEXP GSEXP, SEXP RhoSEXP, SEXP logalphaSEXP, SEXP use_gramSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
@@ -24,13 +24,33 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::List >::type Rho(RhoSEXP);
     Rcpp::traits::input_parameter< const double >::type logalpha(logalphaSEXP);
     Rcpp::traits::input_parameter< const bool >::type use_gram(use_gramSEXP);
-    forward_loop_cpp(x, R, xx, ini_sel, G, Rho, logalpha, use_gram);
+    forward_loop_pvalue_cpp(x, R, xx, ini_sel, G, Rho, logalpha, use_gram);
+    return R_NilValue;
+END_RCPP
+}
+// forward_loop_bic_cpp
+void forward_loop_bic_cpp(const arma::mat& x, const arma::mat& R, const arma::mat& xx, const arma::vec& ini_sel, Rcpp::NumericMatrix G, Rcpp::List Rho, const double tol, const double con, const double logn, const bool use_gram);
+RcppExport SEXP _omphc_forward_loop_bic_cpp(SEXP xSEXP, SEXP RSEXP, SEXP xxSEXP, SEXP ini_selSEXP, SEXP GSEXP, SEXP RhoSEXP, SEXP tolSEXP, SEXP conSEXP, SEXP lognSEXP, SEXP use_gramSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type xx(xxSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type ini_sel(ini_selSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type G(GSEXP);
+    Rcpp::traits::input_parameter< Rcpp::List >::type Rho(RhoSEXP);
+    Rcpp::traits::input_parameter< const double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< const double >::type con(conSEXP);
+    Rcpp::traits::input_parameter< const double >::type logn(lognSEXP);
+    Rcpp::traits::input_parameter< const bool >::type use_gram(use_gramSEXP);
+    forward_loop_bic_cpp(x, R, xx, ini_sel, G, Rho, tol, con, logn, use_gram);
     return R_NilValue;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_omphc_forward_loop_cpp", (DL_FUNC) &_omphc_forward_loop_cpp, 8},
+    {"_omphc_forward_loop_pvalue_cpp", (DL_FUNC) &_omphc_forward_loop_pvalue_cpp, 8},
+    {"_omphc_forward_loop_bic_cpp", (DL_FUNC) &_omphc_forward_loop_bic_cpp, 10},
     {NULL, NULL, 0}
 };
 

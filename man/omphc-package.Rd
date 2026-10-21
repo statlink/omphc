@@ -18,7 +18,7 @@ and Mallat S. G. and Zhang Z. (1993) <doi:10.1109/78.258082>.
 Package: \tab omphc\cr
 Type: \tab Package\cr
 Version: \tab 1.0 \cr
-Date: \tab 2026-10-20\cr
+Date: \tab 2026-10-21\cr
 License: \tab GPL-2\cr
 }
 }
