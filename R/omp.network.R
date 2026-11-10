@@ -39,12 +39,12 @@ omp.network <- function(x, R = NULL, method = "pvalue", tol = 0.05) {
     #   r <- R[j, ]
     #   i <- 2
     #   be <- R[sela, j]
-	#
+	  #
     #   while ( rho[i] < logalpha  &  i < n ) {
     #     i <- i + 1
     #     r[sela] <- 0
     #     #r[ind] <- Rfast::eachcol.apply(x, res, indices = ind[ind > 0])
-	#     idx <- ind[ind > 0] ##
+	  #     idx <- ind[ind > 0] ##
     #     r[idx] <- xx[idx, j] - xx[idx, sela, drop = FALSE] %*% be ## fast
     #     sel <- which.max( abs(r) )
     #     sela <- c(sela, sel)
@@ -61,8 +61,10 @@ omp.network <- function(x, R = NULL, method = "pvalue", tol = 0.05) {
     #     ind[sela] <- 0
     #   }
     #   len <- length(sela)
-    #   Rho[[ j ]] <- rho[1:len]
-    #   names(Rho[[ j ]]) <- c(0, sela[-len] )
+    #   #Rho[[ j ]] <- rho[1:len]
+    #   #names(Rho[[ j ]]) <- c(0, sela[-len] )
+    #   Rho[[ j ]] <- rho[2:len]
+    #   names(Rho[[ j ]]) <- sela[-len]
     #   G[j, sela[-len]] <- 1
     # }  ## end for ( j in 1:d ) {
 

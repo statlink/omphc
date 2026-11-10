@@ -199,21 +199,37 @@ void forward_loop_pvalue_cpp(
       }
     }
 
-    // Store p-values and predictor names.
+    // // Store p-values and predictor names.
+    // const int len = static_cast<int>(selected.size());
+    //
+    // Rcpp::NumericVector rho_out(len);
+    // Rcpp::CharacterVector rho_names(len);
+    //
+    // for (int a = 0; a < len; ++a) {
+    //   rho_out[a] = rho[a];
+    // }
+    //
+    // rho_names[0] = "0";
+    //
+    // for (int a = 1; a < len; ++a) {
+    //   rho_names[a] =
+    //     std::to_string(selected[a - 1] + 1);
+    // }
+    //
+    // rho_out.attr("names") = rho_names;
+    // Rho[j] = rho_out;
+
+    // Store p-values, excluding the initial baseline value.
     const int len = static_cast<int>(selected.size());
 
-    Rcpp::NumericVector rho_out(len);
-    Rcpp::CharacterVector rho_names(len);
+    Rcpp::NumericVector rho_out(len - 1);
+    Rcpp::CharacterVector rho_names(len - 1);
 
-    for (int a = 0; a < len; ++a) {
-      rho_out[a] = rho[a];
-    }
+    for (int a = 0; a < len - 1; ++a) {
+      rho_out[a] = rho[a + 1];
 
-    rho_names[0] = "0";
-
-    for (int a = 1; a < len; ++a) {
       rho_names[a] =
-        std::to_string(selected[a - 1] + 1);
+        std::to_string(selected[a] + 1);
     }
 
     rho_out.attr("names") = rho_names;
