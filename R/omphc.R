@@ -6,7 +6,6 @@ omphc <- function(x, skel = NULL, R = NULL, method = "pvalue", tol = 0.05, algo 
   nama <- colnames(skel$G)
   if ( is.null(nama) )  nama <- paste("X", 1:dim(x)[2], sep = "")
   colnames(x) <- nama
-  vale <- which( skel$G == 1 )
   dag <- NULL
   score <- NULL
   if ( length(vale) > 0 ) {
