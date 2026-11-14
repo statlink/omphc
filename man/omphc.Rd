@@ -1,5 +1,6 @@
 \name{omphc}
 \alias{omphc}
+\alias{omphc.fast}
 \title{
 The OMP-based Bayesian network learning algorithm
 }
@@ -11,6 +12,8 @@ The OMP-based Bayesian network learning algorithm.
 \usage{
 omphc(x, skel = NULL, R = NULL, method = "pvalue", tol = 0.05, algo = "hc",
 tabu = 10, restart = 10, score = "bic-g", blacklist = NULL, whitelist = NULL)
+omphc.fast(x, skel = NULL, R = NULL, method = "pvalue", tol = 0.05,
+blacklist = NULL, whitelist = NULL)
 }
 
 \arguments{
@@ -62,6 +65,7 @@ a set of arcs to be included in the graph.
 The OMPHC or OMPTABU algorithm is implemented. The OMP algorithm (Tsagris et al., 2002,
 Mallat S. G. and Zhang Z. (1993)), is implemented during the skeleton identification phase.
 Next, the Hill Climbing greedy search or the Tabu search is employed to score the network.
+The omphc.fast() uses the \code{ \link{fast.hc} }.
 }
 
 \value{
@@ -72,6 +76,7 @@ A list including the output of the \code{ \link{omp.network} } function.
 \item{dag}{
 A "bn" class output. A list including the outcome of the Hill-Climbing or the Tabu search phase.
 See the package "bnlearn" for more details.
+For the omphc.fast() the dag$bn is of "bn" class output.
 }
 \item{scoring}{
 The score value.
@@ -106,7 +111,7 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 %%  ~~further notes~~
 %}
 \seealso{
-\code{ \link{omp.network}
+\code{ \link{omp.network}, \link{fast.hc}
 }
 }
 
@@ -114,5 +119,6 @@ R implementation and documentation: Michail Tsagris \email{mtsagris@uoc.gr}.
 m <- rbn2(1000, p = 50, nei = 5)
 G <- m$G
 x <- m$x
-a <- omphc(x, tol = 0.01)
+a1 <- omphc(x, tol = 0.05, restart = 0)
+a2 <- omphc.fast(x, tol = 0.05)
 }

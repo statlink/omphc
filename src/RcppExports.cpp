@@ -11,6 +11,24 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// fasthc_cpp
+List fasthc_cpp(const arma::mat& R, NumericVector css, double n, IntegerMatrix blmat, IntegerMatrix wlmat, double maxp, double maxiter, bool mle);
+RcppExport SEXP _omphc_fasthc_cpp(SEXP RSEXP, SEXP cssSEXP, SEXP nSEXP, SEXP blmatSEXP, SEXP wlmatSEXP, SEXP maxpSEXP, SEXP maxiterSEXP, SEXP mleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type css(cssSEXP);
+    Rcpp::traits::input_parameter< double >::type n(nSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type blmat(blmatSEXP);
+    Rcpp::traits::input_parameter< IntegerMatrix >::type wlmat(wlmatSEXP);
+    Rcpp::traits::input_parameter< double >::type maxp(maxpSEXP);
+    Rcpp::traits::input_parameter< double >::type maxiter(maxiterSEXP);
+    Rcpp::traits::input_parameter< bool >::type mle(mleSEXP);
+    rcpp_result_gen = Rcpp::wrap(fasthc_cpp(R, css, n, blmat, wlmat, maxp, maxiter, mle));
+    return rcpp_result_gen;
+END_RCPP
+}
 // forward_loop_pvalue_cpp
 void forward_loop_pvalue_cpp(const arma::mat& x, const arma::mat& R, const arma::mat& xx, const arma::vec& ini_sel, Rcpp::NumericMatrix G, Rcpp::List Rho, const double logalpha, const bool use_gram);
 RcppExport SEXP _omphc_forward_loop_pvalue_cpp(SEXP xSEXP, SEXP RSEXP, SEXP xxSEXP, SEXP ini_selSEXP, SEXP GSEXP, SEXP RhoSEXP, SEXP logalphaSEXP, SEXP use_gramSEXP) {
@@ -49,6 +67,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_omphc_fasthc_cpp", (DL_FUNC) &_omphc_fasthc_cpp, 8},
     {"_omphc_forward_loop_pvalue_cpp", (DL_FUNC) &_omphc_forward_loop_pvalue_cpp, 8},
     {"_omphc_forward_loop_bic_cpp", (DL_FUNC) &_omphc_forward_loop_bic_cpp, 10},
     {NULL, NULL, 0}
