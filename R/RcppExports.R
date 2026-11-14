@@ -2,6 +2,7 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 .fasthc_cpp <- function(R, css, n, blmat, wlmat, maxp, maxiter, mle) {
+<<<<<<< HEAD
     .Call(`_omphc_fasthc_cpp`, R, css, n, blmat, wlmat, maxp, maxiter, mle)
 }
 
@@ -11,5 +12,8 @@ forward_loop_pvalue_cpp <- function(x, R, xx, ini_sel, G, Rho, logalpha, use_gra
 
 forward_loop_bic_cpp <- function(x, R, xx, ini_sel, G, Rho, tol, con, logn, use_gram) {
     invisible(.Call(`_omphc_forward_loop_bic_cpp`, x, R, xx, ini_sel, G, Rho, tol, con, logn, use_gram))
+=======
+    .Call(`_fasthc_fasthc_cpp`, R, css, n, blmat, wlmat, maxp, maxiter, mle)
+>>>>>>> 1959c3d579d014e97ce030d9fb016e9ebce9fa9b
 }
 

@@ -1,0 +1,13 @@
+useDynLib(omphc, .registration = TRUE)
+
+importFrom("bnlearn", hc, tabu, score, graphviz.plot, amat)
+importFrom("pchc", rbn, rbn2, rbn3)
+importFrom("Rfast", standardise, colMaxs, eachcol.apply)
+importFrom("stats", pf, cor)
+import("Rcpp")
+import("parallel")
+
+export(bnmat, bnplot, omp.network, omphc, rbn, rbn2, rbn3,
+       update.skel, omphc.boot, omp.network.boot)
+
+
