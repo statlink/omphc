@@ -1,4 +1,4 @@
-\name{Plot of a Bayesian network}
+\name{bnplot}
 \alias{bnplot}
 
 \title{

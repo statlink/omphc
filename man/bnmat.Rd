@@ -1,4 +1,4 @@
-\name{Adjacency matrix of a Bayesian network}
+\name{bnmat}
 \alias{bnmat}
 
 \title{
